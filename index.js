@@ -97,6 +97,40 @@ function generateLinuxMetrics() {
       swap_used: os.totalmem() * 0.1 * Math.random(),
       percent: Math.random() * 100,
     },
+    storage: {
+      total: 512 * 1024 * 1024 * 1024,
+      used: 256 * 1024 * 1024 * 1024,
+      free: 256 * 1024 * 1024 * 1024,
+      io: {
+        read_bytes: Math.random() * 1000000000,
+        write_bytes: Math.random() * 500000000,
+        read_time: Math.random() * 1000,
+        write_time: Math.random() * 1000,
+      },
+    },
+    network: {
+      wifi: {
+        interface: "wlan0",
+        ssid: "ExampleSSID",
+        signal_level: Math.floor(Math.random() * -30) - 50,
+        ip_address: "192.168.1.100",
+      },
+      statistics: {
+        bytes_sent: Math.floor(Math.random() * 100000000),
+        bytes_received: Math.floor(Math.random() * 100000000),
+        packets_sent: Math.floor(Math.random() * 10000),
+        packets_received: Math.floor(Math.random() * 10000),
+        errors: Math.floor(Math.random() * 10),
+        drops: Math.floor(Math.random() * 5),
+      },
+    },
+    processes: {
+      total: Math.floor(Math.random() * 300),
+      critical_processes: {
+        rover_control: Math.random() > 0.5,
+        telemetry_server: Math.random() > 0.5,
+      },
+    },
   };
 }
 
