@@ -8,8 +8,8 @@ const TELEMETRY_INTERVAL = 1000; // 1 second
 
 // Load SSL certificate and key
 const serverOptions = {
-  cert: fs.readFileSync("cert.pem"),
-  key: fs.readFileSync("key.pem"),
+  cert: fs.readFileSync("localhost.pem"),
+  key: fs.readFileSync("localhost-key.pem"),
 };
 
 // Create an HTTPS server
