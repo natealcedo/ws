@@ -66,7 +66,7 @@ class KeyboardCommandHandler {
 
     switch (key) {
       case "c":
-        message = { command: "ux_capture_image", timestamp };
+        message = { command: "ux_capture", timestamp };
         break;
       case "p":
         message = { command: "ux_previous", timestamp };
