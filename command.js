@@ -49,7 +49,9 @@ class KeyboardCommandHandler {
       this.handleKeyPress(key);
     });
 
-    console.log("Keyboard command handler initialized. Press 'c', 'p', or 'n'. (Press Ctrl+C to exit)");
+    console.log(
+      "Keyboard command handler initialized. Press 'c', 'p', 'n', 'd' or 'm'. (Press Ctrl+C to exit)"
+    );
   }
 
   handleKeyPress(key) {
@@ -71,6 +73,12 @@ class KeyboardCommandHandler {
         break;
       case "n":
         message = { command: "ux_next", timestamp };
+        break;
+      case "m":
+        message = { command: "ux_menu", timestamp };
+        break;
+      case "d":
+        message = { command: "ux_damage", timestamp };
         break;
       default:
         return;
