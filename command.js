@@ -1,12 +1,26 @@
+const fs = require("fs");
+const https = require("https");
 const WebSocket = require("ws");
 
 const HOST = "localhost";
 const PORT = 8765;
 
+// Load SSL certificates (replace with your actual certificate paths)
+const serverOptions = {
+  key: fs.readFileSync("./localhost-key.pem"),
+  cert: fs.readFileSync("./localhost.pem"),
+};
+
+// Create HTTPS server
+const httpsServer = https.createServer(serverOptions);
+httpsServer.listen(PORT, () => {
+  console.log(`WebSocket server started on wss://${HOST}:${PORT}`);
+});
+
 // WebSocket Server
 class WebSocketServer {
-  constructor(host = HOST, port = PORT) {
-    this.server = new WebSocket.Server({ host, port });
+  constructor(server) {
+    this.server = new WebSocket.Server({ server });
     this.clients = new Set();
 
     this.server.on("connection", (ws) => {
@@ -22,8 +36,6 @@ class WebSocketServer {
         console.log("Client disconnected.");
       });
     });
-
-    console.log(`WebSocket server started on ws://${host}:${port}`);
   }
 
   sendMessage(message) {
@@ -92,7 +104,7 @@ class KeyboardCommandHandler {
 // Main Function
 function main() {
   console.log("Starting WebSocket server...");
-  const websocketServer = new WebSocketServer();
+  const websocketServer = new WebSocketServer(httpsServer);
 
   console.log("Initializing keyboard input handler...");
   new KeyboardCommandHandler(websocketServer);

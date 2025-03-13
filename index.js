@@ -1,14 +1,26 @@
 const WebSocket = require("ws");
 const os = require("os");
+const fs = require("fs");
+const https = require("https");
 
 const TELEMETRY_PORT = 8766;
 const TELEMETRY_INTERVAL = 1000; // 1 second
 
-const telemetryServer = new WebSocket.Server({ port: TELEMETRY_PORT });
+const serverOptions = {
+  key: fs.readFileSync("./localhost-key.pem"),
+  cert: fs.readFileSync("./localhost.pem"),
+};
 
-console.log(
-  `Telemetry WebSocket server running on ws://localhost:${TELEMETRY_PORT}`
-);
+// Create HTTPS server
+const httpsServer = https.createServer(serverOptions);
+httpsServer.listen(TELEMETRY_PORT, () => {
+  console.log(
+    `Telemetry WebSocket server running on wss://localhost:${TELEMETRY_PORT}`
+  );
+});
+
+// Create WebSocket server using the HTTPS server
+const telemetryServer = new WebSocket.Server({ server: httpsServer });
 
 let telemetryClients = new Set();
 
@@ -145,5 +157,6 @@ setInterval(() => {
 process.on("SIGINT", () => {
   console.log("\nShutting down telemetry server...");
   telemetryServer.close();
+  httpsServer.close();
   process.exit(0);
 });
